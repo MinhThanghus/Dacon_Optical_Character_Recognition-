@@ -1,0 +1,87 @@
+{
+  "name": "PercepLoss_optimized+GANLoss" //  please remove "debug_" during training
+  , "use_tb_logger": true
+  , "model":"ntire"
+  , "scale": 4
+  , "gpu_ids": [0]
+
+  , "datasets": {
+    "train": {
+      "name": "NTIRE"
+      , "mode": "LRHR"
+      // , "dataroot_HR": "/root/Image-SuperResolution/HR"
+      // , "dataroot_LR": "/root/Image-SuperResolution/LR"
+      , "dataroot_HR": "T:\\super_resolution\\results\\train\\hr/"
+      , "dataroot_LR": "T:\\super_resolution\\results\\train\\lr3/"
+      , "subset_file": null
+      , "use_shuffle": true
+      , "n_workers": 4
+      , "batch_size": 90
+      , "HR_size": 128
+      , "use_flip": true
+      , "use_rot": true
+    }
+    , "val": {
+      "name": "val_NTIRE"
+      , "mode": "LRHR"
+      // , "dataroot_HR": "/root/Image-SuperResolution/valY"
+      // , "dataroot_LR": "/root/Image-SuperResolution/valX"
+      , "dataroot_HR": "T:\\super_resolution\\results\\val\\hr/"
+      , "dataroot_LR": "T:\\super_resolution\\results\\val\\lr/"
+    }
+  }
+
+  , "path": {
+    // "root": "/root/Image-SuperResolution"
+    "root": "T:\\super_resolution\\SRTGAN\\training_model/"
+    , "resume_state": null
+    , "pretrain_model_G": null
+    , "pretrain_model_D": null
+  }
+
+  , "network_G": {
+    "which_model_G": "SRGAN_Gen" // RRDB_net | sr_resnet | SRGANGen
+    , "norm_type": null
+    , "mode": "CNA"
+    , "nf": 32
+    , "nb": 32
+    , "in_nc": 3
+    , "out_nc": 3
+  }
+  , "network_D": {
+    "which_model_D": "discriminator_SRGAN"
+    , "norm_type": "batch"
+    , "act_type": "leakyrelu"
+    , "mode": "CNA"
+    , "nf": 32
+    , "in_nc": 3
+  }
+
+  , "train": {
+    "lr_G": 1e-5
+    , "weight_decay_G": 0
+    , "beta1_G": 0.9
+    , "lr_D": 1e-5
+    , "weight_decay_D": 0
+    , "beta1_D": 0.9
+    , "lr_scheme": "MultiStepLR"
+    , "lr_steps": [250, 500, 750, 1000, 1200, 1500]
+    , "lr_gamma": 0.5
+
+    , "pixel_criterion": "l1"
+    , "pixel_weight": 0
+    , "feature_criterion": "l2"
+    , "feature_weight": 3e-2
+    , "gan_type": "tripletgan"
+    , "gan_weight": 1e-1
+
+    , "manual_seed": 0
+    , "niter": 500000
+    , "val_freq": 250
+  }
+
+  , "logger": {
+    "print_freq": 50
+    , "save_checkpoint_freq": 500
+  }
+}
