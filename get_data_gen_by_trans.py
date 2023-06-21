@@ -6,16 +6,7 @@ transform = A.Compose([
            
           
          
-            A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=2, p=1),
-          
-
-            A.ToGray(p=1),
-        ])
-transform2 = A.Compose([
-            A.Blur(p=0.5),
-            A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=2,  p=1),
-            A.ToGray(p=1),
-            
+           A.Blur(blur_limit=11,p=1),
 
            
             
